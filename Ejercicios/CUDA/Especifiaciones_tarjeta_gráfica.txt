@@ -1,0 +1,18 @@
+Total Device found: 1
+**************************************
+Device Name 	 - GeForce GT 540M 
+**************************************
+Total Global Memory		 -> 1048256 KB
+Shared memory available per block 	 -> 48 KB
+Number of registers per thread block 	 -> 32768
+Warp size in threads 	 -> 32
+Memory Pitch 	 -> 2147483647 bytes
+Maximum threads per block 	 -> 1024
+Maximum Thread Dimension (block) 	 -> 1024 1024 64
+Maximum Thread Dimension (grid) 	 -> 65535 65535 65535
+Total constant memory 	 -> 65536 bytes
+CUDA ver 	 -> 2.1
+Clock rate 	 -> 1344000 KHz
+Texture Alignment 	 -> 512 bytes
+Device Overlap 	 -> Allowed
+Number of Multi processors 	 -> 2
