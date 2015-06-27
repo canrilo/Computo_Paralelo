@@ -28,7 +28,7 @@ int main(void)
 	cudaDeviceProp deviceProp;
 	int nDevCount = 0;
 	cudaGetDeviceCount( &nDevCount );
-	printf( "Total Device found: %d", nDevCount );
+	printf( "Total Device found: %d\n", nDevCount );
 	for (int nDeviceIdx = 0; nDeviceIdx < nDevCount; ++nDeviceIdx )
 	{
 		memset( &deviceProp, 0, sizeof(deviceProp));

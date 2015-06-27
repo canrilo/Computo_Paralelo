@@ -37,6 +37,8 @@ int main ()
 	printf("\nStarting Multiplication Matrix * Matrix ...\n");
 	
 	double start = omp_get_wtime();
+	double sum;
+		#pragma omp parallel for num_threads(2) private(i,j,k) reduction(+:sum)
 		for (i=0; i < SIZE; i++)
 		{	
 			
@@ -44,7 +46,7 @@ int main ()
 			{
 				
 				double sum=0;
-				#pragma omp parallel for num_threads(4) reduction(+:sum)
+				//#pragma omp parallel for num_threads(4) reduction(+:sum)
 				for (k = 0; k < SIZE; k++)
 				{
 					sum+=matrix1[i*SIZE+k] * matrix2[k*SIZE+j];
