@@ -1,0 +1,93 @@
+\documentclass{article}
+\usepackage[spanish,es-lcroman,activeacute] {babel}
+\usepackage[utf8]{inputenc}
+\usepackage[pdftex, plainpages=false, hypertexnames=false, pdfpagelabels=true,
+    hyperindex=true, linktocpage, pagebackref=true, pdfa=true]{hyperref}         % Vinculos
+\usepackage{graphicx}
+\usepackage[margin=2cm]{geometry}
+\usepackage{subcaption}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{color}
+\usepackage{float}			
+\usepackage{parskip}				
+\usepackage{listingsutf8}			%Incluir códigos
+\spanishplainpercent					%Habilitar % en códigos sin comentar
+\usepackage{xcolor}						%Generar mezclas de colores
+\usepackage{advdate}					%Avance de fechas
+
+%Eliminar bordes rojos de los hipervinculos
+\hypersetup{pdfborder=0 0 0}
+%Empezar con pantalla a lo ancho
+%\hypersetup{pdfstartview={XYZ null null 1.00}}
+
+\definecolor{DarkGreen}{RGB}{0,128,0}
+
+\lstset{
+		keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{DarkGreen},
+		basicstyle=\ttfamily\small,
+    numberstyle=\footnotesize,
+    backgroundcolor=\color{gray!10},
+    frame=single,
+    tabsize=2,
+    rulecolor=\color{black!30},
+    title=\lstname,
+    escapeinside={\%*}{*)},
+    breaklines=true,
+    breakatwhitespace=true,
+    framextopmargin=2pt,
+    framexbottommargin=2pt,
+    inputencoding=utf8,
+    extendedchars=true,
+    literate={á}{{\'a}}1 {í}{{\'a}}1 {é}{{\'e}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1 {"}{{''}}1,
+}
+
+
+\setlength{\parskip}{3.1mm plus2mm minus2mm}
+
+%\title{Resumen Artículo Paralelización de Motion JPEG 2000 con CUDA}
+%\author{Camilo Andrés Rivera}
+%\date{26 de Junio de 2015}
+%
+\begin{document}
+
+%Eliminar bordes rojos de los hipervinculos
+\hypersetup{pdfborder=0 0 0}
+
+\input{portada}
+
+\setcounter{page}{1}
+\pagenumbering{roman}
+
+\tableofcontents
+
+\newpage
+\setcounter{page}{1}
+\pagenumbering{arabic}
+
+\section{Introducción}
+
+\newpage
+\section{Fundamento Teórico}
+
+\section{Justificación}
+
+\section{Objetivo}
+
+\newpage
+\section{Desarrollo}
+
+\newpage
+\section{Resultados}
+
+\section{Conclusiones}
+
+
+
+%\lstinputlisting[language=C, firstline=20, lastline=76]{Mat_1.cu}
+
+%\nocite{*}
+%\bibliographystyle{apalike} %ORDENADOS!
+%\bibliography{references}
+\end{document}	
