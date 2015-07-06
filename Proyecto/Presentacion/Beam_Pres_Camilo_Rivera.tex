@@ -1,0 +1,224 @@
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{bbding}
+\usetheme{Madrid}
+\usecolortheme[RGB={19,22,126}]{structure}
+\setbeamercolor{background canvas}{bg = ggray!10}
+\definecolor{darkblue}{RGB}{10,5,133}
+\definecolor{ggray}{RGB}{79,79,79}
+%10,5,133
+\usepackage{media9}
+\usepackage{natbib} %citep and citet
+\usepackage{array}
+\usepackage{listingsutf8}			%Incluir códigos
+\spanishplainpercent					%Habilitar % en códigos sin comentar
+
+\let\myBib\thebibliography
+\let\endmyBib\endthebibliography
+\renewcommand\thebibliography[1]{\ifx\relax#1\relax\else\myBib{#1}\fi}
+\renewcommand{\bibsection}{\subsubsection*{\bibname}}
+
+\let\oldfootnotesize\footnotesize
+\renewcommand*{\footnotesize}{\oldfootnotesize\tiny}
+
+
+\lstset{
+		keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{DarkGreen},
+		basicstyle=\ttfamily\tiny,
+    numberstyle=\footnotesize,
+    backgroundcolor=\color{gray!10},
+    frame=single,
+    tabsize=2,
+    rulecolor=\color{black!30},
+    %title=\lstname,
+    escapeinside={\%*}{*)},
+    breaklines=true,
+    breakatwhitespace=true,
+    framextopmargin=2pt,
+    framexbottommargin=2pt,
+    inputencoding=utf8,
+    extendedchars=true,
+    literate={á}{{\'a}}1 {í}{{\'a}}1 {é}{{\'e}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1 {"}{{''}}1,
+}
+
+
+
+%Justificación de todos los blocks
+\usepackage{ragged2e} 
+\addtobeamertemplate{block begin}{}{\justifying}
+
+
+\setbeamertemplate{bibliography item}{} %Quitar el ícono de bibliografía
+
+%Cambiar tamaño de los captions
+\usepackage{caption}
+\captionsetup{font=scriptsize,labelfont=scriptsize}
+
+\title{Proyecto Final}
+\subtitle{Análisis Comparativo de Técnicas de Paralelización de la Multiplicación de Matrices Usando CUDA}
+\author[Camilo Andrés Rivera]{Camilo Andrés Rivera Lozano\\[7mm] }
+\institute[MSE]{Escuela de Graduados en Ingeniería y Arquitectura\\ Campus Guadalajara}
+
+\begin{document}
+
+\AtBeginSection[ ]
+{
+	\begin{frame}
+	
+		\frametitle{Tabla de contenidos}
+		\tableofcontents[currentsection]
+		
+	\end{frame}
+}
+
+\AtBeginSubsection[ ]
+{
+	\begin{frame}
+	
+		\frametitle{Tabla de contenidos}
+		\tableofcontents[currentsubsection]
+		
+	\end{frame}
+}
+\begin{frame}
+
+	\titlepage
+	
+\end{frame}
+
+\begin{frame}{Agenda}
+\tableofcontents
+\end{frame}
+
+%inicia presentacion
+\section{Introducción}
+%================================================%
+\begin{frame}{Introducción}
+	\begin{block}{\textit{High Performance Computing}}
+		\begin{itemize}
+			\item Alcanzar metas antes no pensadas
+			\item Resolver problemas cuya resolución se creía imposible
+			\item Cientos de procesadores unidos y trabajando en equipo por una misma causa
+		\end{itemize}
+	\end{block}
+	\begin{block}{GPU}
+		\begin{itemize}
+			\item Inicialmente co-procesadores para el trabajo sobre gráficos
+			\item Dada su arquitectura y su alto poder de cómputo se prestaron para el procesamiento paralelo de alto poder de procesamiento
+			\item Lenguaje CUDA basado en C para tarjetas gráficas de NVIDIA
+		\end{itemize}
+		
+	\end{block}
+\end{frame}
+
+%================================================%
+\subsection{Objetivos}
+\begin{frame}{Objetivos}
+	\begin{block}{}
+		\begin{itemize}
+			\item Encontrar diferentes mejoras ante diferentes algoritmos paralelos de multiplicación de matrices respecto al método secuencial
+			\item Utilizar la memoria compartida y observar mejoras en los tiempos
+			\item Generar una serie de códigos que se ejecuten en una GPU y sean funcionales para el propósito establecido
+		\end{itemize}
+	\end{block}
+\end{frame}
+%================================================%
+\subsection{Justificación}
+\begin{frame}{Justificación}
+	\begin{block}{}
+		La multiplicación de matrices es un paso casi inevitable en problemas multidimensionales, operaciones lineales y sistemas de ecuaciones.
+	\end{block}
+	\begin{block}{}
+		El tamaño de elementos crece de manera cuadrática con la dimensión y se vuelve necesario acelerar el proceso de multiplicación. 
+	\end{block}
+	\begin{block}{}
+		Aplicaciones en todas las ciencias, algoritmos de optimización, solución de sistemas de ecuaciones, aprendizaje de máquinas, etc.
+	\end{block}
+\end{frame}
+
+%================================================%
+\section{Marco Teórico}
+\begin{frame}{Multiplicación de Matrices}
+\begin{center}
+	¡Se tiene que aprovechar la estructura matricial de la GPU!
+\end{center}
+\textbf{\underline{Forma Tradicional}}\\[0.5cm]
+\[C_{ij}=\sum_k A_{ik}B_{kj}\]\\
+\textbf{\underline{A Bloques}}\\[0.5cm]
+\[ \begin{pmatrix} A_{UL}&A_{UR}\\A_{LL}&A_{LR}\end{pmatrix}\cdot\begin{pmatrix} B_{UL}&B_{UR}\\B_{LL}&B_{LR}\end{pmatrix}= \begin{pmatrix} C_{UL}&C_{UR}\\C_{LL}&C_{LR}\end{pmatrix} \]
+
+\[ C=\begin{pmatrix} A_{UL}B_{UL}+A_{UR}B_{LL}& A_{UL}B_{UR}+A_{UR}B_{LR} \\A_{LL}B_{UL}+A_{LR}B_{LL}&A_{LL}B_{UR}+A_{LR}B_{LR}\end{pmatrix}  \]
+	
+\end{frame}
+%================================================%
+\section{Resultados}
+\begin{frame}{Mayor Cantidad de Variables}
+\lstinputlisting[language=C, firstline=5, lastline=23]{../Mat_3.cu}
+	
+\end{frame}
+\begin{frame}{Mayor Cantidad de Variables}
+	\lstinputlisting[language=C, firstline=24, lastline=40]{../Mat_3.cu}
+	\begin{block}{}
+		\begin{itemize}
+			\item ¡Otra opción es lanzar 8 veces el kernel con dos submatrices a la vez ahorrando espacio en GPU!
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\begin{frame}{Tiempos de Ejecución}
+\begin{table}[H]
+\centering
+\scriptsize
+	\begin{tabular}{rrrrrc}
+		\hline\hline
+		\textbf{Tamaño} & \textbf{Secuencial} & \textbf{Par 1} & \textbf{Par 2} & \textbf{Par 3}&\textbf{Compartida}\\
+		\hline
+		100 & 4.09 ms&0.201ms & 0.218 ms&0.105 ms&--\\
+		200 &38.28 ms&2.12 ms &	0.182 ms	 & 0.78ms&--\\
+		500	&979.22 ms&32.28 ms	&3.52 ms	&10.6 ms&--\\
+		31 &--&14.3 us&14.9 us&11.6 us\footnotemark &6.38 us\\
+
+
+		\hline
+	\end{tabular}
+	\caption{Tabla de tiempos}
+	\label{tab:tiempos}
+\end{table}
+\footnotetext{Para el caso de la técnica de división de matrices se utilizó un tamaño de 32}
+	\begin{block}{}
+	\scriptsize
+		El último método pudo manejar matrices de 1000x1000 cuyo tiempo de multiplicación fue de 116ms
+	\end{block}
+\end{frame}
+%================================================%
+\section{Conclusiones}
+\begin{frame}{Conclusiones}
+	
+\begin{block}{}
+	\begin{itemize}
+		\item Se observa una gran mejoría en el rendimiento de los algoritmos, para el caso de las matrices 500x500 se observa incluso 278 veces mejor tiempo que para el caso secuencial. 
+		\item Se observa una mejoría ante el uso de la memoria compartida (x2)
+		\item Utilización de cudaMemcpu2D
+	\end{itemize}
+\end{block}
+\end{frame}
+
+%================================================%
+\section{Bibliografía}
+\begin{frame}{Bibliografía}\:
+{
+	\footnotesize
+	\bibliographystyle{unsrt}
+	\bibliography{references}
+	\nocite{*}
+ }
+\end{frame}
+%================================================%
+
+\begin{frame}
+	\titlepage
+\end{frame}
+%================================================%
+\end{document}
